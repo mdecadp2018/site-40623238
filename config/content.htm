@@ -37,9 +37,86 @@
 <p></p>
 <p></p>
 <h1>手足球模擬</h1>
-<h1>程式</h1>
+<h2>人與人對打 V-rep</h2><p><iframe width="500" height="280" src="//www.youtube.com/embed/cXizmBI-Cm0" allowfullscreen="allowfullscreen"></iframe></p><p></p><p></p><h1>程式</h1>
+<h2>人與人對打</h2>
+<pre class="brush:py;auto-links:false;toolbar:false" contenteditable="false">import vrep
+import sys, math
+import keyboard
+# child threaded script: 
+# 內建使用 port 19997 若要加入其他 port, 在  serve 端程式納入
+#simExtRemoteApiStart(19999)
+   
+vrep.simxFinish(-1)
+   
+clientID = vrep.simxStart('127.0.0.1', 19997, True, True, 5000, 5)
+KickBallV = 360 
+Move_Minus =-0.1       
+Move_Plus =0.1
+n=1
+R_KickBallVel = (math.pi/180)*KickBallV
+B_KickBallVel = -(math.pi/180)*KickBallV
+if clientID!= -1:
+    print("Connected to remote server")
+else:
+    print('Connection not successful')
+    sys.exit('Could not connect')
+ 
+errorCode,P1_handle=vrep.simxGetObjectHandle(clientID,'P1',vrep.simx_opmode_oneshot_wait) 
+errorCode,A1_handle=vrep.simxGetObjectHandle(clientID,'A1',vrep.simx_opmode_oneshot_wait)
+errorCode,R1_handle=vrep.simxGetObjectHandle(clientID,'R1',vrep.simx_opmode_oneshot_wait)
+errorCode,B1_handle=vrep.simxGetObjectHandle(clientID,'B1',vrep.simx_opmode_oneshot_wait)
+errorCode,P2_handle=vrep.simxGetObjectHandle(clientID,'P2',vrep.simx_opmode_oneshot_wait)
+errorCode,A2_handle=vrep.simxGetObjectHandle(clientID,'A2',vrep.simx_opmode_oneshot_wait)
+errorCode,R2_handle=vrep.simxGetObjectHandle(clientID,'R2',vrep.simx_opmode_oneshot_wait)
+errorCode,B2_handle=vrep.simxGetObjectHandle(clientID,'B2',vrep.simx_opmode_oneshot_wait)
+#vrep.simxSetJointTargetVelocity(clientID,P1_handle,-6,vrep.simx_opmode_oneshot_wait)
+vrep.simxStartSimulation(clientID,vrep.simx_opmode_oneshot_wait)
+while True:
+    try:
+            if keyboard.is_pressed('w'):    //這行表示按w使R1作動
+                errorCode = vrep.simxSetJointTargetVelocity(clientID,R1_handle,R_KickBallVel,vrep.simx_opmode_oneshot_wait)
+            elif keyboard.is_pressed('x'):   //這行表示按x使R1作動
+                errorCode = vrep.simxSetJointTargetVelocity(clientID,R1_handle,B_KickBallVel,vrep.simx_opmode_oneshot_wait)
+            elif keyboard.is_pressed('a'):    //這行表示按a使P1作動
+                errorCode = vrep.simxSetJointTargetVelocity(clientID,P1_handle,-0.1,vrep.simx_opmode_oneshot_wait)
+            elif keyboard.is_pressed('s'):   //這行表示按s使P1、R1停止
+                errorCode = vrep.simxSetJointTargetVelocity(clientID,P1_handle,0,vrep.simx_opmode_oneshot_wait)
+                errorCode = vrep.simxSetJointTargetVelocity(clientID,R1_handle,0,vrep.simx_opmode_oneshot_wait)
+            elif keyboard.is_pressed('d'):   //這行表示按d使P1作動
+                errorCode =  vrep.simxSetJointTargetVelocity(clientID,P1_handle,0.1,vrep.simx_opmode_oneshot_wait) 
+            if keyboard.is_pressed('8'):   //這行表示按8使R2作動
+                errorCode = vrep.simxSetJointTargetVelocity(clientID,R2_handle,B_KickBallVel,vrep.simx_opmode_oneshot_wait) 
+            elif keyboard.is_pressed('2'):    //這行表示按2使R2作動
+                errorCode = vrep.simxSetJointTargetVelocity(clientID,R2_handle,R_KickBallVel,vrep.simx_opmode_oneshot_wait)
+            elif keyboard.is_pressed('6'):    //這行表示按6使P2作動
+                errorCode = vrep.simxSetJointTargetVelocity(clientID,P2_handle,0.1,vrep.simx_opmode_oneshot_wait)
+            elif keyboard.is_pressed('5'):    //這行表示按5使P2、R2停止做動
+                errorCode = vrep.simxSetJointTargetVelocity(clientID,P2_handle,0,vrep.simx_opmode_oneshot_wait)
+                errorCode = vrep.simxSetJointTargetVelocity(clientID,R2_handle,0,vrep.simx_opmode_oneshot_wait)
+            elif keyboard.is_pressed('4'):    //這行表示按4使P2作動
+                errorCode =  vrep.simxSetJointTargetVelocity(clientID,P2_handle,-0.1,vrep.simx_opmode_oneshot_wait)
+            else:
+                pass
+    except:
+            break
+ 
+#vrep.simxStopSimulation(clientID,vrep.simx_opmode_oneshot_wait)</pre>
+<p></p>
 <h1>Weekly Progress</h1>
-<h2>W1-W9</h2><p><strong>W1-W4</strong></p><p>建立可攜式系統</p><p><span>下載https://github.com/mdekmol/cd2019b-task1-2019cdb_t1_g4。</span></p><p><strong>W5</strong></p><p><span>將手足球初步繪製完畢並組裝起來，與組員一同研究v-rep使用方式。</span></p><p><strong>W6</strong></p><p><span>繪製手足球(<a href="https://cad.onshape.com/documents/738f48358f431db0507a5d8b/w/36fba06acb66b090a39a8321/e/63181d9e641d4880e16f0cf7">onshape</a>)版組合圖</span></p><p><strong>W8</strong><span></span></p><p><strong>W9</strong></p><p><span>期中報告影片</span></p><p><span><iframe width="500" height="280" src="//www.youtube.com/embed/G4VrvVX3MDY" allowfullscreen="allowfullscreen"></iframe></span><span></span></p><p><span></span></p><h2>W10-W18</h2>
+<h2>W1-W9</h2>
+<p><strong>W1-W4</strong></p>
+<p>建立可攜式系統</p>
+<p><span>下載https://github.com/mdekmol/cd2019b-task1-2019cdb_t1_g4。</span></p>
+<p><strong>W5</strong></p>
+<p><span>將手足球初步繪製完畢並組裝起來，與組員一同研究v-rep使用方式。</span></p>
+<p><strong>W6</strong></p>
+<p><span>繪製手足球(<a href="https://cad.onshape.com/documents/738f48358f431db0507a5d8b/w/36fba06acb66b090a39a8321/e/63181d9e641d4880e16f0cf7">onshape</a>)版組合圖</span></p>
+<p><strong>W8</strong><span></span></p>
+<p><strong>W9</strong></p>
+<p><span>期中報告影片</span></p>
+<p><span><iframe width="500" height="280" src="//www.youtube.com/embed/G4VrvVX3MDY" allowfullscreen="allowfullscreen"></iframe></span><span></span></p>
+<p><span></span></p>
+<h2>W10-W18</h2>
 <p><strong>W10</strong></p>
 <p><span>因為V-rep當時模擬時無法分解，因此回去檢查繪圖過程，發先軸與孔大小一樣導致無法正常分解，因此座設計變更，將軸與孔大小變動使其能順利模擬。</span></p>
 <p>練習 bubbleRob tutorial 模擬</p>
@@ -69,7 +146,8 @@
 <p><strong>期末報告</strong></p>
 <p><strong>W18</strong></p>
 <p>期末考周</p>
-<p><span></span></p><h1>Experience</h1>
+<p><span></span></p>
+<h1>Experience</h1>
 <p><strong>W4</strong></p>
 <p><span>https://github.com/mdekmol/cd2019b-task1-2019cdb_t1_g4下載到隨身碟，讓我們可以推東西上傳到網路上。</span></p>
 <p><strong>W5</strong></p>
